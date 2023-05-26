@@ -1,6 +1,6 @@
 from components.component import Component
 from components.collision import Collision
-from components.animatedsprite import AnimatedSprite
+from components.sprite import AnimatedSprite
 from actors.collider import Collider
 from actors.npc import NPC
 from util.util import max_x, max_y

@@ -1,11 +1,10 @@
 from actors.actor import Actor
 from util.math import Vector2
-from components.animatedsprite import AnimatedSprite
+from components.sprite import AnimatedSprite
 from components.playermove import PlayerMove
 from components.collision import Collision
 from components.follownodes import FollowNodes
 from actors.collider import Collider
-from actors.enemy import Enemy
 import pygame
 
 class Player(Actor):

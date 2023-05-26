@@ -2,13 +2,11 @@ from __future__ import annotations
 import pygame
 import actors.actor as actor
 from actors.node import Node
-from actors.npc import MovingNPC
-from actors.enemy import FixedMovingEnemy, DumbChaseEnemy
+from actors.npc import SpriteNPC, MovingNPC
+from actors.enemy import Enemy, FixedMovingEnemy, DumbChaseEnemy
 #from save import Save, find_save_file
 from components.sprite import Sprite
 from actors.player import Player
-from actors.npc import NPC
-from actors.enemy import Enemy
 from actors.collider import Collider, ImgCollider
 from util.math import Vector2
 from util.util import vector2_from_json, str_from_json, float_from_json, max_x, max_y
@@ -127,21 +125,21 @@ class Game:
                     collider = buildable
                     position = vector2_from_json(collider, 'position')
                     dimensions = vector2_from_json(collider, 'dimensions')
-                    col = Collider(self, position, dimensions[0], dimensions[1], True)
+                    col = Collider(self, position, (dimensions[0], dimensions[1]))
                 if buildable['type'] == 'ImgCollider':
                     collider = buildable
                     position = vector2_from_json(collider, 'position')
                     txt = str_from_json(collider, 'texture')
                     scale = float_from_json(collider, 'scale', 1.0)
                     collision = vector2_from_json(collider, 'col')
-                    col = ImgCollider(self, position, txt, scale, collision)
+                    col = ImgCollider(self, position, txt, collision, scale)
                 if buildable['type'] == 'NPC':
                     npc = buildable
                     position = vector2_from_json(npc, 'position')
                     txt = str_from_json(npc, 'texture')
                     scale = float_from_json(npc, 'scale', 1.0)
                     collision = vector2_from_json(npc, 'col')
-                    npc = NPC(self, position, txt, scale, collision)
+                    npc = SpriteNPC(self, position, collision, txt, scale)
                 if buildable['type'] == 'MovingNPC':
                     npc = buildable
                     position = vector2_from_json(npc, 'position')

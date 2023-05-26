@@ -5,39 +5,34 @@ from components.sprite import Sprite
 from components.rectfigure import RectFigure
 
 class Collider(Actor):
-    def __init__(self, game: 'Game', position: Vector2, width: int, height: int,
-                 scale: float = 1.0, figure_text: bool = False,
+    def __init__(self, game: 'Game', position: Vector2,
+                 width_height: Vector2, scale: float = 1.0,
                  figure_text_color: tuple[int, int, int] = (0, 255, 0)):
         super().__init__(game)
-        if figure_text: # if figure_text enabled, collider will be drawn
-            # with simple rectfigure filled by color (default green)
-            figure = RectFigure(self)
-            figure.set_properties(width, height, figure_text_color)
+        self.figure = RectFigure(self)
+        self.figure.set_properties(width_height.x, width_height.x, figure_text_color)
+        self.figure.visible = False
         self.position = position
         self.scale = scale
         self.collision = Collision(self)
-        self.collision.set_size(height, width)
+        self.collision.set_size(width_height.y * self.scale, width_height.x * self.scale)
         game.add_collider(self)
     
     def remove(self):
         self.game.remove_collider(self)
         super().remove()
     
+    def toggle_show(self):
+        self.figure.visible = not self.figure.visible
 
 
 class ImgCollider(Collider):
     def __init__(self, game: 'Game', position: Vector2, texture: str,
-                 scale: float = 1.0, collision: Vector2 = Vector2()):
-        super().__init__(game, position, 0, 0, scale)
+                 collision: Vector2, scale: float = 1.0):
+        super().__init__(game, position, collision, scale)
         self.sprite = Sprite(self)
         self.sprite.load_texture(texture)
-        if collision.length() <= 0.0: # if no collision
-            # then use sprite
-            sprite_width = self.sprite.texture.get_width()
-            sprite_height = self.sprite.texture.get_height()
-            self.collision.set_size(sprite_height, sprite_width)
-        else:
-            self.collision.set_size(collision.y, collision.x)
+        #self.collision.set_size(collision.y, collision.x)
     
     def set_scale(self, scale: float):
         self.scale = scale

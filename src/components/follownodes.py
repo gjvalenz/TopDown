@@ -9,6 +9,8 @@ class FollowNodes(ApproachPosition):
         self.goal_node: None|'Node' = nodes[0]
         self.include_player: bool = include_player
         self.visible_nodes: bool = visible_nodes
+        for n in self.nodes:
+            n.attach_parent(actor)
     
     def update(self, dt: float):
         if self.goal_index + 1 >= len(self.nodes):

@@ -1,6 +1,5 @@
 from components.component import Component
-from components.animatedsprite import AnimatedSprite
-from components.sprite import Sprite
+from components.sprite import AnimatedSprite, Sprite
 
 class SpriteFlash(Component):
     def __init__(self, actor: 'Actor', tick: int = 4):
