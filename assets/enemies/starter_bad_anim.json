@@ -1,0 +1,39 @@
+{
+    "asset": "../assets/enemies/starter_bad_anims.png", 
+    "animations":
+    [
+        {
+            "name": "down",
+            "still": 1,
+            "y": 7,
+            "x": [10, 59, 105],
+            "dimensions": [28, 40],
+            "col": [20, 35]
+        },
+        {
+            "name": "left",
+            "still": 1,
+            "y": 55,
+            "x": [9, 57, 106],
+            "dimensions": [23, 41],
+            "col": [15, 35]
+        },
+        {
+            "name": "right",
+            "still": 1,
+            "y": 103,
+            "x": [15, 63, 111],
+            "dimensions": [23, 41],
+            "col": [15, 35]
+        },
+        {
+            "name": "up",
+            "still": 1,
+            "y": 151,
+            "x": [10, 57, 105],
+            "dimensions": [27, 41],
+            "col": [20, 35]
+        }
+
+    ]
+}

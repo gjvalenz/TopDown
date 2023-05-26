@@ -1,0 +1,71 @@
+{
+    "buildables":
+    [
+        {
+            "type": "Player",
+            "position": [300, 200],
+            "animation": "../assets/player/player_anim.json"
+        },
+        {
+            "type": "ImgCollider",
+            "position": [250, 250],
+            "texture": "../assets/detail/tree.png",
+            "col": [20, 90],
+            "scale": 1.5
+        },
+        {
+            "type": "NPC",
+            "position": [50, 50],
+            "texture": "../assets/npcs/watermelon_wizard.png",
+            "col": [0, 0],
+            "scale": 1.25
+        },
+        {
+            "type": "MovingNPC",
+            "position": [400, 400],
+            "animation": "../assets/npcs/starter_neutral_anim.json",
+            "speed": 100.0,
+            "nodes":
+            [
+                [400, 400],
+                [400, 450],
+                [400, 500],
+                [450, 500],
+                [500, 500]
+            ]
+        },
+        {
+            "type": "FixedMovingEnemy",
+            "position": [100, 100],
+            "animation": "../assets/enemies/starter_bad_anim.json",
+            "speed": 100.0,
+            "nodes":
+            [
+                [100, 100],
+                [200, 200],
+                [200, 300],
+                [200, 400]
+            ]
+        },
+        {
+            "type": "PlayerChaserEnemy",
+            "position": [600, 100],
+            "animation": "../assets/enemies/starter_bad_anim.json",
+            "speed": 320.0,
+            "close_stop": 55.0,
+            "scale": 1.8
+        }
+    ],
+    "map":
+    {
+        "texture": "../assets/maps/map.png"
+    },
+    "sounds":
+    [
+        {
+            "name": "background",
+            "location": "../assets/sounds/forbidden_forest.wav",
+            "looping": true
+        }
+    ]
+}
