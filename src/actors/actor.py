@@ -34,7 +34,7 @@ class Actor:
             self.components.remove(component)
     
     def on_update(self, dt: float): # virtual
-        ''
+        pass
     
     def update(self, dt: float):
         if self.state == Actor.State.Active:
@@ -43,7 +43,7 @@ class Actor:
             self.on_update(dt)
     
     def on_process_input(self, keys: list[bool]): # virtual
-        ''
+        pass
     
     def process_input(self, keys: list[bool]):
         if self.state == Actor.State.Active:

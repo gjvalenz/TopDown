@@ -1,21 +1,20 @@
 from actors.actor import Actor
 from util.math import Vector2
-from components.sprite import Sprite
+from components.sprite import Sprite, AnimatedSprite
 from actors.node import Node
 from components.collision import Collision
-from components.animatedsprite import AnimatedSprite
 from components.follownodes import FollowNodes
+from util.interfaces import IActorWithCollision, IActorWithAnimated, IActorWithSprite
 
-class NPC(Actor):
-    def __init__(self, game: 'Game', startingPosition: Vector2, texture: str, scale: float = 1.0, collision: Vector2 = Vector2()):
+class NPC(Actor, IActorWithCollision, IActorWithSprite):
+    def __init__(self, game: 'Game', starting_position: Vector2, texture: str, collision: Vector2, scale: float = 1.0, ):
         super().__init__(game)
-        self.position = startingPosition
+        self.position = starting_position
         self.collision = Collision(self)
         self.scale = scale
-        if texture:
-            self.texture = texture
-            self.sprite = Sprite(self, 50)
-            self.sprite.load_texture(texture)
+        self.texture = texture
+        self.sprite = Sprite(self, 50)
+        self.sprite.load_texture(texture)
         if collision.length() <= 0.0 and texture:
             rect = self.sprite.texture.get_rect()
             self.collision.set_size(rect.height, rect.width)
@@ -29,8 +28,13 @@ class NPC(Actor):
         self.scale = scale
         self.sprite.scale(scale)
 
+class AnimatedNPC(Actor, IActorWithCollision, IActorWithAnimated):
+    def __init__(self, game: 'Game', starting_position: Vector2,
+                 anim_src: str, nodes: list[Node], speed: float):
+        
+
 class MovingNPC(NPC):
-    def __init__(self, game: 'Game', startingPosition: Vector2, anim_src: str, nodes: list[Node], speed: float):
+    def __init__(self, game: 'Game', starting_position: Vector2, anim_src: str, nodes: list[Node], speed: float):
         super().__init__(game, startingPosition, None)
         FollowNodes(self, nodes, speed)
         for n in nodes:

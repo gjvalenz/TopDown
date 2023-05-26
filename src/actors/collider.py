@@ -5,9 +5,12 @@ from components.sprite import Sprite
 from components.rectfigure import RectFigure
 
 class Collider(Actor):
-    def __init__(self, game: 'Game', position: Vector2, width: int, height: int, scale: float = 1.0, figure_text: bool = False, figure_text_color: tuple[int, int, int] = (0, 255, 0)):
+    def __init__(self, game: 'Game', position: Vector2, width: int, height: int,
+                 scale: float = 1.0, figure_text: bool = False,
+                 figure_text_color: tuple[int, int, int] = (0, 255, 0)):
         super().__init__(game)
-        if figure_text:
+        if figure_text: # if figure_text enabled, collider will be drawn
+            # with simple rectfigure filled by color (default green)
             figure = RectFigure(self)
             figure.set_properties(width, height, figure_text_color)
         self.position = position
@@ -23,11 +26,13 @@ class Collider(Actor):
 
 
 class ImgCollider(Collider):
-    def __init__(self, game: 'Game', position: Vector2, texture: str, scale: float = 1.0, collision: Vector2 = Vector2()):
+    def __init__(self, game: 'Game', position: Vector2, texture: str,
+                 scale: float = 1.0, collision: Vector2 = Vector2()):
         super().__init__(game, position, 0, 0, scale)
         self.sprite = Sprite(self)
         self.sprite.load_texture(texture)
-        if collision.length() <= 0.0:
+        if collision.length() <= 0.0: # if no collision
+            # then use sprite
             sprite_width = self.sprite.texture.get_width()
             sprite_height = self.sprite.texture.get_height()
             self.collision.set_size(sprite_height, sprite_width)

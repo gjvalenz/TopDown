@@ -14,6 +14,7 @@ from util.math import Vector2
 from util.util import vector2_from_json, str_from_json, float_from_json, max_x, max_y
 from util.event import EventManager
 from util.audio import Audio
+from util.interfaces import IDrawableComponent
 from json import load
 
 Event = pygame.event.Event
@@ -21,14 +22,13 @@ Clock = pygame.time.Clock
 Surface = pygame.Surface
 Actor = actor.Actor
 
-
 class Game:
     def __init__(self):
         self.actors: list[Actor] = []
         self.running: bool = True
         self.clock: Clock = Clock()
         self.fps: int = 60
-        self.sprites: list[Sprite] = []
+        self.sprites: list[IDrawableComponent] = []
         self.colliders: list[Actor] = []
         self.npcs: list[NPC] = []
         self.enemies: list[Enemy] = []
@@ -67,6 +67,14 @@ class Game:
         if npc in self.npc:
             self.npc.remove(npc)
 
+    def add_drawable(self, drawable: IDrawableComponent):
+        if drawable not in self.sprites:
+            self.sprites.append(drawable)
+            self.sprites = sorted(self.sprites, key=lambda sprite: sprite.draw_order)
+    
+    def remove_drawable(self, drawable: IDrawableComponent):
+        if drawable in self.sprites:
+            self.sprites.remove(drawable)
     
     def loop(self):
         while self.running:
@@ -105,15 +113,6 @@ class Game:
             if sprite.visible:
                 sprite.draw(self.screen)
         pygame.display.update()
-    
-    def add_sprite(self, sprite: Sprite):
-        if sprite not in self.sprites:
-            self.sprites.append(sprite)
-            self.sprites = sorted(self.sprites, key=lambda sprite: sprite.draw_order)
-    
-    def remove_sprite(self, sprite: Sprite):
-        if sprite in self.sprites:
-            self.sprites.remove(sprite)
     
     def load_from_json(self, fn: str):
         with open(fn, 'r') as file:
