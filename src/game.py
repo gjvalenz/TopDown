@@ -1,19 +1,14 @@
 from __future__ import annotations
 import pygame
 import actors.actor as actor
-from actors.node import Node
-from actors.npc import SpriteNPC, MovingNPC
-from actors.enemy import Enemy, FixedMovingEnemy, DumbChaseEnemy
+from actors.enemy import Enemy
 #from save import Save, find_save_file
-from components.sprite import Sprite
 from actors.player import Player
-from actors.collider import Collider, ImgCollider
 from util.math import Vector2
-from util.util import vector2_from_json, str_from_json, float_from_json, max_x, max_y
+from util.util import max_x, max_y
+from util.load_data import load_from_json_to_game
 from util.event import EventManager
-from util.audio import Audio
 from util.interfaces import IDrawableComponent
-from json import load
 
 Event = pygame.event.Event
 Clock = pygame.time.Clock
@@ -95,8 +90,6 @@ class Game:
         dt: float = ms * 0.001
         if dt >= (1.0/self.fps):
             dt = (1.0/self.fps)
-        # audio update
-        # event updates first
         EventManager.get_instance().run(dt)
         for actor in self.actors:
             actor.update(dt)
@@ -111,86 +104,15 @@ class Game:
             if sprite.visible:
                 sprite.draw(self.screen)
         pygame.display.update()
-    
-    def load_from_json(self, fn: str):
-        with open(fn, 'r') as file:
-            data = load(file)
-            for buildable in data['buildables']:
-                if buildable['type'] == 'Player':
-                    player = buildable
-                    position = vector2_from_json(player, 'position')
-                    anim = player['animation']
-                    self.player = Player(self, position, anim)
-                if buildable['type'] == 'Collider':
-                    collider = buildable
-                    position = vector2_from_json(collider, 'position')
-                    dimensions = vector2_from_json(collider, 'dimensions')
-                    col = Collider(self, position, (dimensions[0], dimensions[1]))
-                if buildable['type'] == 'ImgCollider':
-                    collider = buildable
-                    position = vector2_from_json(collider, 'position')
-                    txt = str_from_json(collider, 'texture')
-                    scale = float_from_json(collider, 'scale', 1.0)
-                    collision = vector2_from_json(collider, 'col')
-                    col = ImgCollider(self, position, txt, collision, scale)
-                if buildable['type'] == 'NPC':
-                    npc = buildable
-                    position = vector2_from_json(npc, 'position')
-                    txt = str_from_json(npc, 'texture')
-                    scale = float_from_json(npc, 'scale', 1.0)
-                    collision = vector2_from_json(npc, 'col')
-                    npc = SpriteNPC(self, position, collision, txt, scale)
-                if buildable['type'] == 'MovingNPC':
-                    npc = buildable
-                    position = vector2_from_json(npc, 'position')
-                    anim = npc['animation']
-                    speed = float_from_json(npc, 'speed')
-                    positions: list[list] = npc['nodes']
-                    accurate_positions: list[Vector2] = []
-                    for n in positions:
-                        accurate_positions.append(Vector2(n[0], n[1]))
-                    nodes: list[Node] = []
-                    for p in accurate_positions:
-                        nodes.append(Node(self, p))
-                    moving_npc = MovingNPC(self, position, anim, nodes, speed)
-                if buildable['type'] == 'FixedMovingEnemy':
-                    enemy = buildable
-                    position = vector2_from_json(enemy, 'position')
-                    anim = enemy['animation']
-                    speed = float_from_json(enemy, 'speed')
-                    positions: list[list] = enemy['nodes']
-                    accurate_positions: list[Vector2] = []
-                    for n in positions:
-                        accurate_positions.append(Vector2(n[0], n[1]))
-                    nodes: list[Node] = []
-                    for p in accurate_positions:
-                        nodes.append(Node(self, p))
-                    moving_enemy = FixedMovingEnemy(self, position, anim, nodes, speed)
-                if buildable['type'] == 'PlayerChaserEnemy':
-                    enemy = buildable
-                    position = vector2_from_json(enemy, 'position')
-                    anim = enemy['animation']
-                    speed = float_from_json(enemy, 'speed')
-                    close_stop = float_from_json(enemy, 'close_stop')
-                    scale = float_from_json(enemy, 'scale', 1.0)
-                    chasing_enemy = DumbChaseEnemy(self, position, anim, close_stop, speed)
-                    chasing_enemy.scale = scale
-            map_actor = Actor(self)
-            map_background = Sprite(map_actor, 10)
-            map_data = data['map']
-            map_background.load_texture(map_data['texture'])
-            if 'sounds' in data:
-                for song_data in data['sounds']:
-                    Audio.get_instance().play_song(song_data['name'], song_data['location'], song_data['looping'])
-
 
     def load_data(self):
         #self.save_data: Save = find_save_file()
-        self.load_from_json('../assets/levels/level1.json')
+        load_from_json_to_game(self, '../assets/levels/level1.json')
     
     def init(self):
         pygame.init()
         self.screen: Surface = pygame.display.set_mode((max_x, max_y))
+        pygame.display.set_caption('TopDown')
         self.load_data()
     
     def shutdown(self):

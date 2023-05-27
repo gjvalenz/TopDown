@@ -1,7 +1,7 @@
 from util.math import Vector2
 
-max_x: int = 800
-max_y: int = 800
+max_x: int = 400
+max_y: int = max_x
 
 def vector2_from_json(json_struct, attr_name: str, default_value: Vector2 = Vector2()) -> Vector2:
     if json_struct[attr_name]:

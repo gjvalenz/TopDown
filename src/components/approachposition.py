@@ -67,7 +67,6 @@ class ApproachPosition(Component):
                     continue
                 side, offset = collider.get_min_overlap(c.collision)
                 if side != Collision.CollSide.NONE:
-                    #self.acposition += offset
                     collided = True
             if collided:
                 self.actor.position = old_position

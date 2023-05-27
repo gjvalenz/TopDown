@@ -32,7 +32,6 @@ class ImgCollider(Collider):
         super().__init__(game, position, collision, scale)
         self.sprite = Sprite(self)
         self.sprite.load_texture(texture)
-        #self.collision.set_size(collision.y, collision.x)
     
     def set_scale(self, scale: float):
         self.scale = scale

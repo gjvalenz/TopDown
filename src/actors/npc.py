@@ -17,8 +17,6 @@ class NPC(Actor, IActorWithCollision):
         game.add_npc(self)
 
 class SpriteNPC(NPC, IActorWithSprite):
-    # update: decoupling collision and sprite dimensions: now collision MUST
-    # be given separately from sprite and collision won't infer dimensions from sprite anymore
     def __init__(self, game: 'Game', starting_position: Vector2,
                  collision: Vector2, texture: str, scale: float = 1.0, ):
         super().__init__(game, starting_position, collision, scale)

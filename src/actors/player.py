@@ -8,9 +8,9 @@ from actors.collider import Collider
 import pygame
 
 class Player(Actor):
-    def __init__(self, game: 'Game', startingPosition: Vector2, anim: str):
+    def __init__(self, game: 'Game', starting_position: Vector2, anim: str):
         super().__init__(game)
-        self.position = startingPosition
+        self.position = starting_position
         self.animated = AnimatedSprite(self, 50)
         self.animated.load_animation_info(anim)
         self.collision = Collision(self)
