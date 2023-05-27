@@ -10,7 +10,8 @@ from util.util import vector2_from_json, str_from_json, float_from_json
 from util.audio import Audio
 from json import load
 
-def load_from_json_to_game(game: 'Game', filename: str):
+def load_from_json_to_game(game: 'Game', filename: str) -> bool:
+    loaded_player: bool = False
     with open(filename, 'r') as file:
         data = load(file)
         for buildable in data['buildables']:
@@ -19,6 +20,7 @@ def load_from_json_to_game(game: 'Game', filename: str):
                 position = vector2_from_json(player, 'position')
                 anim = player['animation']
                 game.player = Player(game, position, anim)
+                loaded_player = True
             if buildable['type'] == 'Collider':
                 collider = buildable
                 position = vector2_from_json(collider, 'position')
@@ -82,3 +84,4 @@ def load_from_json_to_game(game: 'Game', filename: str):
         if 'sounds' in data:
             for song_data in data['sounds']:
                 Audio.get_instance().play_song(song_data['name'], song_data['location'], song_data['looping'])
+    return loaded_player

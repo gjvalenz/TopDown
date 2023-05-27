@@ -31,8 +31,11 @@ class PlayerMove(Component):
         if dim:
             self.player_collision.set_size(dim.y, dim.x)
         self.direction = Vector2()
+        self.enabled: bool = True
     
     def process_input(self, keys: list[bool]):
+        if not self.enabled:
+            return
         self.direction = Vector2()
         if control_pressed(UP_CONTROL, keys):
             self.walking = True

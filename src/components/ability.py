@@ -16,6 +16,7 @@ class Ability(Component):
         self.cd: float = starting_cd
         self.t_alive: float = 0.0
         self.ability_active: bool = False
+        self.enabled: bool = True
     
     def activate_ability(self):
         pass
@@ -27,6 +28,8 @@ class Ability(Component):
         pass
     
     def process_input(self, keys: list[bool]):
+        if not self.enabled:
+            return
         pressed_now: bool = control_pressed(self.control, keys)
         if not self.control_pressed and pressed_now:
             self.activate_ability()

@@ -16,6 +16,7 @@ class Player(Actor):
         self.animated.load_animation_info(anim)
         self.collision = Collision(self)
         self.collision.set_size(0, 0)
+        self.health: float = 0.0
         PlayerMove(self)
         StunArea(self, ABILITY_3_CONTROL, 5.0, 0.25)
         DevTools(self, DEVTOOLS_CONTROL)

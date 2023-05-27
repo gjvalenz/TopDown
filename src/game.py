@@ -2,8 +2,9 @@ from __future__ import annotations
 import pygame
 import actors.actor as actor
 from actors.enemy import Enemy
-#from save import Save, find_save_file
+from util.save import SaveManager
 from actors.player import Player
+from util.context import ContextManager
 from util.math import Vector2
 from util.util import max_x, max_y
 from util.load_data import load_from_json_to_game
@@ -25,10 +26,13 @@ class Game:
         self.colliders: list[Actor] = []
         self.npcs: list[NPC] = []
         self.enemies: list[Enemy] = []
+        self.location: str = ''
         self.camera: Vector2 = Vector2()
         self.map: None|Actor = None
         self.map_dim: Vector2 = Vector2()
         self.player: None | Player = None
+        self.quest: int = 0
+        self.quest_index: int = 0
     
     def add_actor(self, actor: Actor):
         if actor not in self.actors:
@@ -80,6 +84,7 @@ class Game:
     def process_input(self):
         keys: list[bool] = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
+            SaveManager.get_instance().update_save(self)
             self.running = False
         for actor in self.actors:
             actor.process_input(keys)
@@ -108,8 +113,9 @@ class Game:
         pygame.display.update()
 
     def load_data(self):
+        ContextManager.get_instance().load(self)
         #self.save_data: Save = find_save_file()
-        load_from_json_to_game(self, '../assets/levels/level1.json')
+        #load_from_json_to_game(self, '../assets/levels/level1.json')
     
     def init(self):
         pygame.init()
