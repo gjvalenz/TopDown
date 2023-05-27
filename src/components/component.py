@@ -13,10 +13,10 @@ class Component:
         return self.actor.game
     
     def update(self, dt: float):
-        ''
+        pass
     
     def process_input(self, keys: list[bool]):
-        ''
+        pass
     
     def remove(self):
-        ''
+        pass

@@ -26,6 +26,8 @@ class Game:
         self.npcs: list[NPC] = []
         self.enemies: list[Enemy] = []
         self.camera: Vector2 = Vector2()
+        self.map: None|Actor = None
+        self.map_dim: Vector2 = Vector2()
         self.player: None | Player = None
     
     def add_actor(self, actor: Actor):
