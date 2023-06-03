@@ -1,0 +1,65 @@
+// took a break to come up with a few ideas on how to handle this:
+// described far below
+/*{
+    "story":
+    [
+    {
+        "action": "Create",
+        "type": "StoryCollider",
+        "OnTrigger":
+        [
+            /*steps
+            {
+                "fade-in": 0.0,
+                "step": "DisablePlayerMovement"
+            },
+            {
+                "fade-in": 0.5,
+                "step": "Dialogue",
+                "text": "Who goes there?",
+                "from": "Watermelon Wizard"
+            },
+            {
+                "fade-in": 0.1,
+                "step": "Spawn",
+                "id": "0xer50",
+                "type": "GoToPositionNPC",
+                "position": [490, 100], // a bit above story collider
+                "animation": "../assets/npcs/watermelon_wizard_anim.json",
+                "speed": 320.0,
+                "close_stop": 95.0,
+                "scale": 1.2
+            },
+            {
+                "fade-in": 2.0,
+                "step": "Dialogue",
+                "text": "What are you doing here???????",
+                "from": "Watermelon Wizard"
+            },
+            ...,
+            {
+                "fade-in": 0.5,
+                "step": "SetGoal",
+                "id": "0xer50",
+                "position": [-512, -512] // outside screen
+            },
+            {
+                "fade-in": 0.0,
+                "step": "DeSpawn",
+                "id": "0xer50"
+            }
+        ]
+    }]
+}*/
+
+/*
+Str8ct8re:
+location.json:
+buildables can be PreQuestCollider [only trigger if on quest and quest_index == 0], PostQuestCollider [[same but only if quest_index == 2, inc quest #]]
+which plays blurps (in order) in [quest_id.json]
+{
+    "pre-quest'; [array blurps here],
+    "quest": [tasks supervised by questwatcher here (enemy defeat calls questwatcher.update()), questwatcher ++ index after completion],
+    "post-quest" [array blurps here]
+}
+*/

@@ -1,0 +1,49 @@
+{
+    "story":
+    [
+    {
+        "action": "Create",
+        "type": "StoryCollider",
+        "OnTrigger":
+        [
+            {
+                "fade-in": 0.0,
+                "step": "DisablePlayerMovement"
+            },
+            {
+                "fade-in": 0.5,
+                "step": "Dialogue",
+                "text": "Who goes there?",
+                "from": "Watermelon Wizard"
+            },
+            {
+                "fade-in": 0.1,
+                "step": "Spawn",
+                "id": "0xer50",
+                "type": "GoToPositionNPC",
+                "position": [490, 100],
+                "animation": "../assets/npcs/watermelon_wizard_anim.json",
+                "speed": 320.0,
+                "close_stop": 95.0,
+                "scale": 1.2
+            },
+            {
+                "fade-in": 2.0,
+                "step": "Dialogue",
+                "text": "What are you doing here???????",
+                "from": "Watermelon Wizard"
+            },
+            {
+                "fade-in": 0.5,
+                "step": "SetGoal",
+                "id": "0xer50",
+                "position": [-512, -512]
+            },
+            {
+                "fade-in": 0.0,
+                "step": "DeSpawn",
+                "id": "0xer50"
+            }
+        ]
+    }]
+}
