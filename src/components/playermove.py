@@ -1,9 +1,10 @@
 from components.component import Component
 from components.collision import Collision
 from components.sprite import AnimatedSprite
+from components.dialogue import Dialogue
 from util.interfaces import IActorWithCollision
 from util.math import Vector2, clamp
-from util.controls import UP_CONTROL, DOWN_CONTROL, RIGHT_CONTROL, LEFT_CONTROL, control_pressed
+from util.controls import UP_CONTROL, DOWN_CONTROL, RIGHT_CONTROL, LEFT_CONTROL, CONFIRMATION_CONTROL, control_pressed
 from enum import Enum
 import pygame
 
@@ -53,6 +54,9 @@ class PlayerMove(Component):
             self.walking = True
             self.facing_dir = PlayerMove.Direction.LEFT
             self.direction = Vector2(-1, 0)
+        elif control_pressed(CONFIRMATION_CONTROL, keys):
+            d = Dialogue(self.actor)
+            d.load_text('Hey there')
         else:
             self.walking = False
         if self.direction == Vector2():
