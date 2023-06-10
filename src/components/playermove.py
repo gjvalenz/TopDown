@@ -55,7 +55,7 @@ class PlayerMove(Component):
             self.facing_dir = PlayerMove.Direction.LEFT
             self.direction = Vector2(-1, 0)
         elif control_pressed(CONFIRMATION_CONTROL, keys):
-            d = Dialogue(self.actor, 2.0)
+            d = Dialogue(self.actor)
             d.load_text('Hey there')
         else:
             self.walking = False

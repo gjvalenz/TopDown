@@ -31,9 +31,9 @@ class Dialogue(Component, IDrawableComponent):
         super().update(dt)
         if self.is_timed:
             self.timer -= dt
-        if self.timer <= 0.0:
-            self.remove()
-            self.actor.remove_component(self)
+            if self.timer <= 0.0:
+                self.remove()
+                self.actor.remove_component(self)
     
     def draw(self, screen: Surface):
         if self.text:
