@@ -83,5 +83,6 @@ class StunArea(Ability):
     def ability_effect(self):
         for c in self.actor.game.enemies:
             if self.area.collision.intersect(c.collision):
-                c.stop(2)
+                if not c.is_stunned():
+                    c.stop(2)
 
