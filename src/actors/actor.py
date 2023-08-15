@@ -1,10 +1,10 @@
 from __future__ import annotations
 from enum import Enum
-from pygame import event
+#from pygame import event
+from util.event import EventManager, Event
 from util.math import Vector2
 
-
-Event = event.Event
+#Event = event.Event
 
 class Actor:
     State = Enum('State', ['Active', 'Destroyed', 'Paused'])
@@ -21,6 +21,23 @@ class Actor:
         else:
             self.name = ''
         self.game.add_actor(self)
+    
+    def enable_all_components(a: 'Actor'):
+        for c in a.components:
+            c.enable()
+
+    def enable_all_components_s(self):
+        for c in self.components:
+            c.enable()
+        
+    def disable_all_components_for_time(self, t: float):
+        for c in self.components:
+            c.disable()
+        EventManager.get_instance().add_event(Event(Actor.enable_all_components, t, self))
+    
+    def disable_all_components(self):
+        for c in self.components:
+            c.disable()
     
     def remove(self):
         for component in self.components:
@@ -43,7 +60,8 @@ class Actor:
     def update(self, dt: float):
         if self.state == Actor.State.Active:
             for component in self.components:
-                component.update(dt)
+                if not component.get_disabled():
+                    component.update(dt)
             self.on_update(dt)
     
     def on_process_input(self, keys: list[bool]): # virtual
@@ -52,7 +70,8 @@ class Actor:
     def process_input(self, keys: list[bool]):
         if self.state == Actor.State.Active:
             for component in self.components:
-                component.process_input(keys)
+                if not component.get_disabled():
+                    component.process_input(keys)
             self.on_process_input(keys)
     
     def get_component(self, Type):
@@ -60,3 +79,6 @@ class Actor:
             if isinstance(c, Type):
                 return c
         return None
+    
+    def stop(self):
+        pass

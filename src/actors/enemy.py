@@ -26,7 +26,9 @@ class Enemy(Actor, IActorWithCollision, EnemyInstance):
         game.add_enemy(self)
         
     def start_again(enemy: 'Enemy'):
-        enemy.state = Actor.State.Active
+        for c in enemy.components:
+            c.enable()
+        #enemy.state = Actor.State.Active
         enemy.stunned = False
     
     def turn_on_collision(enemy: 'Enemy'):
@@ -38,7 +40,10 @@ class Enemy(Actor, IActorWithCollision, EnemyInstance):
     def stop(self, time: float):
         self.stunned = True
         self.notify()
-        self.state = Actor.State.Paused
+        for c in self.components:
+            c.disable()
+        #self.disable_all_components_for_time(time)
+        #self.state = Actor.State.Paused
         EventManager.get_instance().add_event(Event(Enemy.start_again, time, self))
     
     def damage(self, damage: int):

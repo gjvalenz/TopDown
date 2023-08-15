@@ -25,6 +25,7 @@ class Game:
         self.sprites: list[IDrawableComponent] = []
         self.colliders: list[Actor] = []
         self.npcs: list[NPC] = []
+        self.talking_to : 'Actor' = None
         self.enemies: list[Enemy] = []
         self.location: str = ''
         self.camera: Vector2 = Vector2()

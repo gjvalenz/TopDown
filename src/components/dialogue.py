@@ -1,4 +1,6 @@
+from typing import Callable
 from components.component import Component
+from util.controls import control_pressed, INTERACT_CONTROL
 from util.util import max_x, max_y
 from util.interfaces import IDrawableComponent
 import pygame
@@ -17,8 +19,18 @@ class Dialogue(Component, IDrawableComponent):
         self.font: Font = pygame.font.Font('../assets/fonts/vcr_osd_mono.ttf', 22)
         self.text_surface: None|Surface = None
         self.is_timed: bool = time_span > 0.0
+        self.input_startup: float = 0.4
         self.timer: float = time_span
+        self.after_effect = None
+        self.after_effect_args = None
         self.actor.game.add_drawable(self)
+    
+    def disable(self):
+        pass
+    
+    def add_after_effect(self, c: Callable[..., None], *args):
+        self.after_effect_args = list(args)
+        self.after_effect = c
     
     def remove(self):
         self.actor.game.remove_drawable(self)
@@ -38,14 +50,31 @@ class Dialogue(Component, IDrawableComponent):
         self.text_surfaces: list[Surface] = []
         for text in self.texts:
             self.text_surfaces.append(self.font.render(text, True, (0, 0, 0), None))
+    
+    def process_input(self, keys: list[bool]):
+        if self.is_timed or self.input_startup > 0.0:
+            return
+        super().process_input(keys)
+        if control_pressed(INTERACT_CONTROL, keys):
+            self.get_game().player.enable_all_components_s()
+            self.get_game().talking_to.enable_all_components_s()
+            self.get_game().talking_to = None
+            self.actor.dialogue_timer = self.actor.dialogue_timer_old
+            self.remove()
+            self.actor.remove_component(self)
+            if self.after_effect:
+                self.after_effect(*self.after_effect_args)
 
     def update(self, dt: float):
         super().update(dt)
+        self.input_startup -= dt
         if self.is_timed:
             self.timer -= dt
             if self.timer <= 0.0:
                 self.remove()
                 self.actor.remove_component(self)
+                if self.after_effect:
+                    self.after_effect(*self.after_effect_args)
     
     def draw(self, screen: Surface):
         if self.text:

@@ -8,6 +8,16 @@ class Component:
         self.actor: 'Actor' = actor
         self.update_order: int = update_order
         self.actor.add_component(self)
+        self.disabled = False
+
+    def disable(self):
+        self.disabled = True
+    
+    def enable(self):
+        self.disabled = False
+
+    def get_disabled(self):
+        return self.disabled
     
     def get_game(self):
         return self.actor.game

@@ -1,8 +1,7 @@
-from actors.actor import Actor
 from typing import Callable, Any
 
 class Event:
-    def __init__(self, func: Callable[[Actor], Any], time_from_now: float, actor: Actor):
+    def __init__(self, func: Callable[['Actor'], Any], time_from_now: float, actor: 'Actor'):
         self.timer: float = time_from_now
         self.func = func
         self.actor = actor
