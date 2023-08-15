@@ -7,8 +7,8 @@ from components.rectfigure import RectFigure
 class Collider(Actor):
     def __init__(self, game: 'Game', position: Vector2,
                  width_height: Vector2, scale: float = 1.0,
-                 figure_text_color: tuple[int, int, int] = (0, 255, 0)):
-        super().__init__(game)
+                 figure_text_color: tuple[int, int, int] = (0, 255, 0), name=''):
+        super().__init__(game, name)
         self.figure = RectFigure(self)
         self.figure.set_properties(width_height.x, width_height.x, figure_text_color)
         self.figure.visible = False
@@ -28,8 +28,8 @@ class Collider(Actor):
 
 class ImgCollider(Collider):
     def __init__(self, game: 'Game', position: Vector2, texture: str,
-                 collision: Vector2, scale: float = 1.0):
-        super().__init__(game, position, collision, scale)
+                 collision: Vector2, scale: float = 1.0, name=''):
+        super().__init__(game, position, collision, scale, name)
         self.sprite = Sprite(self)
         self.sprite.load_texture(texture)
     

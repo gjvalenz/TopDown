@@ -8,8 +8,8 @@ from util.interfaces import IActorWithCollision, IActorWithAnimated, IActorWithS
 
 class NPC(Actor, IActorWithCollision):
     def __init__(self, game: 'Game', starting_position: Vector2,
-                 collision: Vector2, scale: float = 1.0):
-        super().__init__(game)
+                 collision: Vector2, scale: float = 1.0, name=''):
+        super().__init__(game, name)
         self.position = starting_position
         self.scale = scale
         self.collision = Collision(self)
@@ -18,8 +18,8 @@ class NPC(Actor, IActorWithCollision):
 
 class SpriteNPC(NPC, IActorWithSprite):
     def __init__(self, game: 'Game', starting_position: Vector2,
-                 collision: Vector2, texture: str, scale: float = 1.0, ):
-        super().__init__(game, starting_position, collision, scale)
+                 collision: Vector2, texture: str, scale: float = 1.0, name=''):
+        super().__init__(game, starting_position, collision, scale, name)
         self.texture = texture
         self.sprite = Sprite(self, 50)
         self.sprite.load_texture(texture)
@@ -30,14 +30,14 @@ class SpriteNPC(NPC, IActorWithSprite):
 
 class AnimatedNPC(NPC, IActorWithAnimated):
     def __init__(self, game: 'Game', starting_position: Vector2,
-                 anim_src: str):
-        super().__init__(game, starting_position, Vector2(0, 0), 1.0)
+                 anim_src: str, name=''):
+        super().__init__(game, starting_position, Vector2(0, 0), 1.0, name)
         self.animated = AnimatedSprite(self, 50)
         self.animated.load_animation_info(anim_src)
 
 class MovingNPC(AnimatedNPC):
     def __init__(self, game: 'Game', starting_position: Vector2,
-                 anim_src: str, nodes: list[Node], speed: float):
-        super().__init__(game, starting_position, anim_src)
+                 anim_src: str, nodes: list[Node], speed: float, name=''):
+        super().__init__(game, starting_position, anim_src, name)
         FollowNodes(self, nodes, speed)
 

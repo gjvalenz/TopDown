@@ -42,6 +42,7 @@
         },
         {
             "type": "MovingNPC",
+            "name": "Old Man John",
             "position": [400, 400],
             "animation": "../assets/npcs/starter_neutral_anim.json",
             "speed": 100.0,
@@ -56,6 +57,7 @@
         },
         {
             "type": "FixedMovingEnemy",
+            "name": "Roamer",
             "position": [100, 100],
             "animation": "../assets/enemies/starter_bad_anim.json",
             "speed": 100.0,
@@ -70,6 +72,7 @@
         {
             "type": "PlayerChaserEnemy",
             "position": [490, 100],
+            "name": "Chaser",
             "animation": "../assets/enemies/starter_bad_anim.json",
             "speed": 320.0,
             "close_stop": 95.0,

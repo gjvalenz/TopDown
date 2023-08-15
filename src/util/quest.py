@@ -5,8 +5,8 @@ from actors.actor import Actor
 class Quest:
     method: str
     count: int
-    affects: type
-    def __init__(self, m: str, c: int, a: type):
+    affects: str # name of thing affected
+    def __init__(self, m: str, c: int, a: str):
         self.method = m
         self.count = c
         self.affects = a
@@ -26,4 +26,4 @@ class QuestManager(Observer):
     def update(self, enemy: EnemyInstance):
         if enemy.is_stunned():
             self.count += 1
-            print(f'ENEMY PAUSED!! {self.count}')
+            print(f'{enemy.name} PAUSED!! {self.count}')

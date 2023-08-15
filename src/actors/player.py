@@ -9,8 +9,8 @@ from components.toggle import DevTools, TestDamage
 from util.controls import ABILITY_3_CONTROL, TEST_DAMAGE_CONTROL, DEVTOOLS_CONTROL
 
 class Player(Actor):
-    def __init__(self, game: 'Game', starting_position: Vector2, anim: str):
-        super().__init__(game)
+    def __init__(self, game: 'Game', starting_position: Vector2, anim: str, name=''):
+        super().__init__(game, name)
         self.position = starting_position
         self.animated = AnimatedSprite(self, 50)
         self.animated.load_animation_info(anim)

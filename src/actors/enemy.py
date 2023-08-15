@@ -13,8 +13,8 @@ from util.quest import QuestManager
 
 class Enemy(Actor, IActorWithCollision, EnemyInstance):
     def __init__(self, game: 'Game', starting_position: Vector2,
-                 collision: Vector2, scale: float = 1.0):
-        super().__init__(game)
+                 collision: Vector2, scale: float = 1.0, name=''):
+        super().__init__(game, name)
         q = QuestManager.get_instance()
         self.attach(q)
         self.position = starting_position
@@ -49,8 +49,8 @@ class Enemy(Actor, IActorWithCollision, EnemyInstance):
 
 class SpriteEnemy(Enemy, IActorWithSprite):
     def __init__(self, game: 'Game', starting_position: Vector2,
-                 collision: Vector2, texture: str, scale: float = 1.0, ):
-        super().__init__(game, starting_position, collision, scale)
+                 collision: Vector2, texture: str, scale: float = 1.0, name=''):
+        super().__init__(game, starting_position, collision, scale, name)
         self.texture = texture
         self.sprite = Sprite(self, 50)
         self.sprite.load_texture(texture)
@@ -61,21 +61,21 @@ class SpriteEnemy(Enemy, IActorWithSprite):
 
 class AnimatedEnemy(Enemy, IActorWithAnimated):
     def __init__(self, game: 'Game', starting_position: Vector2,
-                 anim_src: str):
-        super().__init__(game, starting_position, Vector2(0, 0), 1.0)
+                 anim_src: str, name=''):
+        super().__init__(game, starting_position, Vector2(0, 0), 1.0, name)
         self.animated = AnimatedSprite(self, 50)
         self.animated.load_animation_info(anim_src)
 
 class FixedMovingEnemy(AnimatedEnemy):
     def __init__(self, game: 'Game', starting_position: Vector2,
-                 anim_src: str, nodes: list[Node], speed: float):
-        super().__init__(game, starting_position, anim_src)
+                 anim_src: str, nodes: list[Node], speed: float, name=''):
+        super().__init__(game, starting_position, anim_src, name)
         FollowNodes(self, nodes, speed)
 
 class DumbChaseEnemy(AnimatedEnemy):
     def __init__(self, game: 'Game', starting_position: Vector2,
-                 anim_src: str, close_dist: float, speed: float):
-        super().__init__(game, starting_position, anim_src)
+                 anim_src: str, close_dist: float, speed: float, name=''):
+        super().__init__(game, starting_position, anim_src, name)
         dc = None
         if close_dist == 0.0:
             dc = DumbChase(self, speed, False, False)

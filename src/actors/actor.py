@@ -8,7 +8,7 @@ Event = event.Event
 
 class Actor:
     State = Enum('State', ['Active', 'Destroyed', 'Paused'])
-    def __init__(self, game: 'Game'):
+    def __init__(self, game: 'Game', name=''):
         self.state: Actor.State = Actor.State.Active
         self.components: list[Component] = []
         self.position: Vector2 = Vector2()
@@ -16,6 +16,10 @@ class Actor:
         self.rotation: float = 0.0
         self.paused: bool = False
         self.game: 'Game' = game
+        if name:
+            self.name = name
+        else:
+            self.name = ''
         self.game.add_actor(self)
     
     def remove(self):

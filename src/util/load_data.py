@@ -18,28 +18,32 @@ def load_from_json_to_game(game: 'Game', filename: str) -> bool:
             if buildable['type'] == 'Player':
                 player = buildable
                 position = vector2_from_json(player, 'position')
+                name = player['name'] if 'name' in player else ''
                 anim = player['animation']
-                game.player = Player(game, position, anim)
+                game.player = Player(game, position, anim, name)
                 loaded_player = True
             if buildable['type'] == 'Collider':
                 collider = buildable
                 position = vector2_from_json(collider, 'position')
                 dimensions = vector2_from_json(collider, 'dimensions')
-                col = Collider(game, position, Vector2(dimensions[0], dimensions[1]))
+                name = collider['name'] if 'name' in collider else ''
+                col = Collider(game, position, Vector2(dimensions[0], dimensions[1]), name=name)
             if buildable['type'] == 'ImgCollider':
                 collider = buildable
                 position = vector2_from_json(collider, 'position')
                 txt = str_from_json(collider, 'texture')
                 scale = float_from_json(collider, 'scale', 1.0)
                 collision = vector2_from_json(collider, 'col')
-                col = ImgCollider(game, position, txt, collision, scale)
+                name = collider['name'] if 'name' in collider else ''
+                col = ImgCollider(game, position, txt, collision, scale, name=name)
             if buildable['type'] == 'NPC':
                 npc = buildable
                 position = vector2_from_json(npc, 'position')
                 txt = str_from_json(npc, 'texture')
                 scale = float_from_json(npc, 'scale', 1.0)
                 collision = vector2_from_json(npc, 'col')
-                npc = SpriteNPC(game, position, collision, txt, scale)
+                name = npc['name'] if 'name' in npc else ''
+                npc = SpriteNPC(game, position, collision, txt, scale, name)
             if buildable['type'] == 'MovingNPC':
                 npc = buildable
                 position = vector2_from_json(npc, 'position')
@@ -52,7 +56,8 @@ def load_from_json_to_game(game: 'Game', filename: str) -> bool:
                 nodes: list[Node] = []
                 for p in accurate_positions:
                     nodes.append(Node(game, p))
-                moving_npc = MovingNPC(game, position, anim, nodes, speed)
+                name = npc['name'] if 'name' in npc else ''
+                moving_npc = MovingNPC(game, position, anim, nodes, speed, name)
             if buildable['type'] == 'FixedMovingEnemy':
                 enemy = buildable
                 position = vector2_from_json(enemy, 'position')
@@ -65,7 +70,8 @@ def load_from_json_to_game(game: 'Game', filename: str) -> bool:
                 nodes: list[Node] = []
                 for p in accurate_positions:
                     nodes.append(Node(game, p))
-                moving_enemy = FixedMovingEnemy(game, position, anim, nodes, speed)
+                name = enemy['name'] if 'name' in enemy else ''
+                moving_enemy = FixedMovingEnemy(game, position, anim, nodes, speed, name)
             if buildable['type'] == 'PlayerChaserEnemy':
                 enemy = buildable
                 position = vector2_from_json(enemy, 'position')
@@ -73,9 +79,10 @@ def load_from_json_to_game(game: 'Game', filename: str) -> bool:
                 speed = float_from_json(enemy, 'speed')
                 close_stop = float_from_json(enemy, 'close_stop')
                 scale = float_from_json(enemy, 'scale', 1.0)
-                chasing_enemy = DumbChaseEnemy(game, position, anim, close_stop, speed)
+                name = enemy['name'] if 'name' in enemy else ''
+                chasing_enemy = DumbChaseEnemy(game, position, anim, close_stop, speed, name)
                 chasing_enemy.scale = scale
-        game.map = Actor(game)
+        game.map = Actor(game, 'CURRENT_MAP')
         map_background = Sprite(game.map, 10)
         map_data = data['map']
         map_background.load_texture(map_data['texture'])
