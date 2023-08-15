@@ -25,7 +25,19 @@ class Dialogue(Component, IDrawableComponent):
     
     def load_text(self, text: str):
         self.text = text
+        i: int = 0
+        self.texts = []
+        while (i < len(text)):
+            if i + 40 > len(text):
+                self.texts.append(text[i:].lstrip())
+            else:
+                self.texts.append(text[i:i+40].lstrip())
+            i += 40
+        print(self.texts)
         self.text_surface = self.font.render(self.text, True, (0, 0, 0), None)
+        self.text_surfaces: list[Surface] = []
+        for text in self.texts:
+            self.text_surfaces.append(self.font.render(text, True, (0, 0, 0), None))
 
     def update(self, dt: float):
         super().update(dt)
@@ -48,6 +60,12 @@ class Dialogue(Component, IDrawableComponent):
             rect = pygame.Rect(x + border_size, y + border_size, w - border_size * 2, h - border_size * 2)
             pygame.draw.rect(screen, border_color, border)
             pygame.draw.rect(screen, (255, 255, 255), rect)
-            text_rect = self.text_surface.get_rect()
-            text_rect.topleft = (x + 10, y + 10)
-            screen.blit(self.text_surface, text_rect)
+            #text_rect = self.text_surface.get_rect()
+            #text_rect.topleft = (x + 10, y + 10)
+            #screen.blit(self.text_surface, text_rect)
+            i = 0
+            for text_surf in self.text_surfaces:
+                text_rect = text_surf.get_rect()
+                text_rect.topleft = (x+10, y + (i * 30) + 10)
+                screen.blit(text_surf, text_rect)
+                i += 1

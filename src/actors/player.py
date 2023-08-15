@@ -4,9 +4,10 @@ from components.sprite import AnimatedSprite
 from components.playermove import PlayerMove
 from components.collision import Collision
 from components.camera import Camera
+from components.dialogue import Dialogue
 from components.ability import StunArea
 from components.toggle import DevTools, TestDamage
-from util.controls import ABILITY_3_CONTROL, TEST_DAMAGE_CONTROL, DEVTOOLS_CONTROL
+from util.controls import ABILITY_3_CONTROL, TEST_DAMAGE_CONTROL, DEVTOOLS_CONTROL, INTERACT_CONTROL, control_pressed
 
 class Player(Actor):
     def __init__(self, game: 'Game', starting_position: Vector2, anim: str, name=''):
@@ -17,6 +18,7 @@ class Player(Actor):
         self.collision = Collision(self)
         self.collision.set_size(0, 0)
         self.health: float = 0.0
+        self.interact_pressed_before = False
         PlayerMove(self)
         StunArea(self, ABILITY_3_CONTROL, 5.0, 0.25)
         DevTools(self, DEVTOOLS_CONTROL)
@@ -24,6 +26,20 @@ class Player(Actor):
         Camera(self)
     
     def on_process_input(self, keys: list[bool]):
+        interact_pressed_now = control_pressed(INTERACT_CONTROL, keys)
+        if not self.interact_pressed_before and interact_pressed_now:
+            for npc in self.game.npcs:
+                dist = Vector2(self.position - npc.position)
+                dist = dist.length()
+                if dist <= 45.0:
+                    if npc.name == 'Watermelon Wizard':
+                        d = Dialogue(self, 1.5)
+                        d.load_text('Hello there young Wizard...')
+                    elif npc.name == 'Old Man John':
+                        d = Dialogue(self, 1.5)
+                        d.load_text("These days, I'm as old as old Watermelon Wizard...")
+                    #print(f'talked to {npc.name}')
+        self.interact_pressed_before = interact_pressed_now
         pass
     
     def on_update(self, dt: float):

@@ -12,6 +12,8 @@ DOWN_CONTROL = [pygame.K_DOWN]
 RIGHT_CONTROL = [pygame.K_RIGHT]
 LEFT_CONTROL = [pygame.K_LEFT]
 
+INTERACT_CONTROL = [pygame.K_z]
+
 ABILITY_1_CONTROL = [pygame.K_q]
 ABILITY_2_CONTROL = [pygame.K_w]
 ABILITY_3_CONTROL = [pygame.K_e]

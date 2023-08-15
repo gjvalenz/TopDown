@@ -35,6 +35,7 @@
         },
         {
             "type": "NPC",
+            "name": "Watermelon Wizard",
             "position": [50, 50],
             "texture": "../assets/npcs/watermelon_wizard.png",
             "col": [24, 34],
